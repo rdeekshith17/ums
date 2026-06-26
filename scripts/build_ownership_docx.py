@@ -1,242 +1,201 @@
 from docx import Document
-from docx.shared import Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
 
 doc = Document()
-
-# Base styles
-styles = doc.styles
-normal = styles['Normal']
+normal = doc.styles['Normal']
 normal.font.name = 'Calibri'
 normal.font.size = Pt(11)
 
-def add_heading(text, level=1):
-    h = doc.add_heading(text, level=level)
-    return h
-
-def add_para(text, bold=False, italic=False):
-    p = doc.add_paragraph()
-    r = p.add_run(text)
-    r.bold = bold
-    r.italic = italic
-    return p
-
-def add_bullet(text):
-    doc.add_paragraph(text, style='List Bullet')
-
-def add_code_block(text):
-    p = doc.add_paragraph()
-    r = p.add_run(text)
-    r.font.name = 'Consolas'
-    r.font.size = Pt(8.5)
-    return p
-
-def add_table(headers, rows):
-    t = doc.add_table(rows=1, cols=len(headers))
-    t.style = 'Light Grid Accent 1'
+def H(text, level=1): doc.add_heading(text, level=level)
+def P(text, bold=False, italic=False):
+    p = doc.add_paragraph(); r = p.add_run(text); r.bold = bold; r.italic = italic; return p
+def B(text): doc.add_paragraph(text, style='List Bullet')
+def CODE(text):
+    p = doc.add_paragraph(); r = p.add_run(text); r.font.name='Consolas'; r.font.size=Pt(8.5); return p
+def TABLE(headers, rows):
+    t = doc.add_table(rows=1, cols=len(headers)); t.style='Light Grid Accent 1'
     hdr = t.rows[0].cells
-    for i, h in enumerate(headers):
-        hdr[i].text = h
+    for i,h in enumerate(headers):
+        hdr[i].text=h
         for par in hdr[i].paragraphs:
-            for run in par.runs:
-                run.bold = True
+            for run in par.runs: run.bold=True
     for row in rows:
-        cells = t.add_row().cells
-        for i, val in enumerate(row):
-            cells[i].text = val
+        cells=t.add_row().cells
+        for i,v in enumerate(row): cells[i].text=v
     return t
 
-# ===== Title =====
-title = doc.add_heading('Project Skeleton — Ownership Map (Corrected)', level=0)
-add_para('Who builds what, how the team rotates for whole-project experience, and the phase-wise plan', italic=True)
+doc.add_heading('Project Skeleton — Ownership Map (Corrected — Full Product)', level=0)
+P('Frontend / Backend / AI-Services structure, team rotation for whole-project experience, and the phase-wise plan', italic=True)
+P('Stack: React (frontend SPA) + FastAPI (backend API) + Python AI-services (RAG + model serving: vLLM/Ollama, embeddings, OpenAI router) + PostgreSQL + Vector DB + Docker/K8s.')
+P('Tenancy: Multi-university multi-tenant SaaS. Auth: SSO (SAML/OIDC) + email-password JWT.')
+P('Ownership philosophy: Collective ownership with rotation. No file is permanently locked to one squad. Each pillar has a rotating Primary (builds) and Reviewer (reviews + learns); pods rotate across pillars each phase so every team member gets hands-on experience across the whole project.', italic=True)
 
-add_para('Stack: FastAPI + SQLAlchemy (ORM) + Alembic (migrations) + Jinja2 templates + Bootstrap (Admin UI) + Docker/Docker-Compose.')
-add_para('Scope of this skeleton: Tenant Management, AI Launch & Session, Admin UI, and Infra/QA foundations.')
-add_para('Ownership philosophy (updated): Collective ownership with rotation. No file is permanently locked to one squad. Each module has a rotating Primary (builds) and Reviewer (reviews + learns), and developers rotate across modules each phase so every team member gets hands-on experience across the whole project.', italic=True)
-
-# ===== Section 1: Tree =====
-add_heading('1. Annotated Project Tree (corrected nesting)', 1)
+H('1. Monorepo Folder Structure (Frontend / Backend / AI)', 1)
 tree = """project-root/
-├── app/
-│   ├── main.py                     # Bootstrap FastAPI app + register all routers
-│   ├── config.py                   # Centralized settings (.env: DB URL, JWT secret, env)
-│   ├── database.py                 # SQLAlchemy engine + session maker (shared by models)
-│   │
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── tenant.py               # Tenant ORM model
-│   │   ├── session.py              # Session ORM model
-│   │   └── audit_log.py            # AuditLog ORM model (all modules emit events)
-│   │
-│   ├── schemas/
-│   │   ├── __init__.py
-│   │   ├── tenant.py               # Pydantic schemas for /tenants + enable/disable-ai
-│   │   ├── launch.py               # Schema for POST /api/v1/ai/launch
-│   │   └── session.py              # Schema for session create/response
-│   │
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── tenants.py              # Tenant CRUD + PATCH enable-ai / disable-ai
-│   │   ├── launch.py               # POST /api/v1/ai/launch
-│   │   ├── admin.py                # Jinja page routes (dashboard, list, add, edit)
-│   │   └── health.py               # Readiness / liveness checks
-│   │
-│   ├── services/
-│   │   ├── __init__.py
-│   │   ├── tenant_service.py       # Tenant CRUD + AI enable/disable business logic
-│   │   ├── launch_service.py       # Orchestrates validate -> session -> token -> chat URL
-│   │   └── token_service.py        # JWT signing, claims, expiry
-│   │
-│   ├── templates/
-│   │   ├── layout.html             # Base layout + nav
-│   │   ├── tenants.html            # Tenant list + dashboard stats
-│   │   ├── add_tenant.html         # Create tenant form
-│   │   └── edit_tenant.html        # Edit tenant + Enable/Disable AI buttons
-│   │
-│   └── static/
-│       ├── css/
-│       │   └── style.css           # Bootstrap-based styling
-│       └── js/
-│           └── app.js              # Client-side interactivity (buttons/forms)
 │
-├── migrations/                     # Alembic migration scripts (tenants, sessions, audit_logs)
-├── tests/
-│   ├── test_tenants.py             # Tenant CRUD + enable/disable tests
-│   └── test_launch.py              # Launch + full create->enable->launch->token flow
-├── Dockerfile                      # Container image for the app
-├── docker-compose.yml              # App + database wired for local/staging
-├── requirements.txt                # Python deps (every dev adds what their part needs)
-├── .env.example                    # Sample environment variables
-└── README.md                       # Setup, architecture overview, endpoint list"""
-add_code_block(tree)
+├── frontend/                       # React SPA - Student / Professor / Admin dashboards
+│   ├── public/
+│   ├── src/
+│   │   ├── app/                    # routing, providers, layout
+│   │   ├── auth/                   # login, SSO callback, JWT/session
+│   │   ├── modules/
+│   │   │   ├── student/            # AI chat, my-attendance, my-marks
+│   │   │   ├── professor/          # attendance, marks, analytics
+│   │   │   ├── admin/              # payments, payroll, halltickets, expenses
+│   │   │   └── tenant-admin/       # tenant CRUD, enable/disable AI, branding
+│   │   ├── components/ui/          # shared design system
+│   │   ├── lib/                    # API client, tenant resolver, hooks
+│   │   └── store/
+│   ├── package.json
+│   └── .env.example
+│
+├── backend/                        # FastAPI - API + business logic (NO templates)
+│   ├── app/
+│   │   ├── main.py                 # bootstrap + router registration
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── core/
+│   │   │   ├── tenancy/            # tenant_id context, RLS helpers
+│   │   │   └── security/           # JWT, RBAC, SSO
+│   │   ├── models/                 # tenant, session, user, audit_log, academic, finance
+│   │   ├── schemas/                # Pydantic request/response
+│   │   ├── routes/                 # tenants, launch, auth, academic, finance, health
+│   │   ├── services/               # tenant_service, launch_service, token_service, ...
+│   │   └── clients/
+│   │       └── ai_client.py        # talks to ai-services over HTTP (decoupled)
+│   ├── migrations/                 # Alembic
+│   ├── tests/
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── ai-services/                    # AI / RAG layer (scales on GPUs, deploys separately)
+│   ├── rag/
+│   │   ├── ingestion/              # parse -> chunk -> embed professor notes
+│   │   ├── retrieval/              # vector search + re-rank (tenant/course scoped)
+│   │   ├── pipeline/               # build grounded prompt -> answer + citations
+│   │   └── guardrails/             # grounding, moderation, anti-injection
+│   ├── serving/
+│   │   ├── llm_server/             # vLLM / Ollama config to serve self-hosted model
+│   │   ├── embeddings/             # embedding model service (bge / e5)
+│   │   └── router/                 # self-hosted <-> OpenAI routing logic
+│   ├── prompts/                    # versioned prompt templates
+│   ├── model_registry/             # CONFIG ONLY - model names, versions, endpoints
+│   │   └── models.yaml             # WEIGHTS live in object storage, NOT here
+│   ├── workers/                    # async embedding / reindex jobs
+│   ├── tests/
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── deploy/                         # IaC & deployment (shared)
+│   ├── docker/                     # frontend.Dockerfile, backend.Dockerfile, ai.Dockerfile
+│   ├── k8s/                        # frontend / backend / ai-services / vector-db / ingress
+│   └── terraform/                  # VPC, Postgres, GPU node pool, object storage, vector DB
+│
+├── docs/                           # architecture, data model, API ref, RAG pipeline
+├── scripts/                        # seed, SIS/CSV import, model-download, maintenance
+├── docker-compose.yml              # local dev: frontend + backend + ai + db + vector-db
+├── .gitignore                      # ignores model weights, node_modules, .env
+└── README.md"""
+CODE(tree)
 
-# ===== Section 2: Data Model =====
-add_heading('2. Data Model Snapshot (for reference)', 1)
-add_table(
-    ['Table', 'Key Columns'],
+H('2. Key Architectural Rules', 1)
+B('Backend never imports AI code directly - it calls ai-services over HTTP via backend/app/clients/ai_client.py, keeping the GPU-heavy AI layer independently deployable.')
+B('Model weights are NOT in the repo - model_registry/models.yaml lists names/versions/endpoints only; binaries are pulled from object storage / model registry at container startup (scripts/model-download). .gitignore blocks weight files.')
+B('Vector DB and object storage are infrastructure, provisioned in deploy/terraform/ - not folders in the codebase.')
+B('Every backend table carries tenant_id with PostgreSQL Row-Level Security; vector collections and storage prefixes are tenant-scoped.')
+B('Server-rendered Jinja templates/static are removed - all UI is handled by the React frontend/.')
+
+H('3. Pillar Build Plan', 1)
+TABLE(
+    ['Pillar', 'Key Areas', 'What Gets Built'],
     [
-        ['tenants', 'id, tenant_id, tenant_name, portal_url, status, ai_enabled, created_at'],
-        ['sessions', 'id, session_id, tenant_id, user_id, role, expires_at, created_at'],
-        ['audit_logs', 'id, tenant_id, event_type, details, created_at'],
+        ['Frontend (React)', 'auth, student, professor, admin, tenant-admin, ui, lib', 'Role-aware dashboards, AI chat UI, API client, SSO + JWT flows'],
+        ['Backend (FastAPI)', 'core (tenancy/security), models, schemas, routes, services, clients', 'Multi-tenant API, auth/RBAC, tenant & academic & finance logic, ai_client'],
+        ['AI-Services (Python)', 'rag (ingestion/retrieval/pipeline/guardrails), serving, router, workers', 'Note ingestion + embeddings, vector search, grounded answers, model routing'],
+        ['Infra & QA', 'deploy (docker/k8s/terraform), tests, migrations, scripts', 'Containers, cluster manifests, IaC, CI tests (incl. cross-tenant isolation)'],
     ]
 )
 
-# ===== Section 3: Build Plan =====
-add_heading('3. File-by-File Build Plan (one-week sprint, Day 1-5)', 1)
-add_table(
-    ['File / Folder', 'Phase', 'What to Build', 'Sprint Day'],
-    [
-        ['app/main.py', 'Foundation', "Bootstrap FastAPI app; register each router as it lands (tenants, launch, admin, health)", 'Day 1-5'],
-        ['app/config.py', 'Foundation', 'Centralized settings - DB URL, JWT secret, env vars from .env', 'Day 1'],
-        ['app/database.py', 'Foundation', 'SQLAlchemy engine + session maker used by all models', 'Day 1'],
-        ['app/models/tenant.py', 'Core', 'Tenant ORM model', 'Day 1-2'],
-        ['app/models/session.py', 'Core', 'Session ORM model', 'Day 2'],
-        ['app/models/audit_log.py', 'Foundation', 'AuditLog ORM model; tenant & launch flows write events here', 'Day 1 (used 3-5)'],
-        ['app/schemas/tenant.py', 'Core', 'Pydantic schemas for POST/GET/PUT/DELETE /tenants + enable/disable-ai', 'Day 2'],
-        ['app/schemas/launch.py', 'Core', 'Schema for POST /api/v1/ai/launch (tenant_id in -> chat URL + token out)', 'Day 2'],
-        ['app/schemas/session.py', 'Core', 'Session create/response schema (session_id, expires_at, role)', 'Day 2-3'],
-        ['app/routes/tenants.py', 'Core', 'Tenant CRUD + PATCH enable-ai/disable-ai -> calls tenant_service.py', 'Day 2-3'],
-        ['app/routes/launch.py', 'Core', 'POST /api/v1/ai/launch -> validate tenant, call launch + token services', 'Day 2-4'],
-        ['app/routes/admin.py', 'Core', 'Jinja page routes (dashboard, list, add, edit) -> calls Tenant API', 'Day 2-4'],
-        ['app/routes/health.py', 'Hardening', 'Readiness/liveness endpoints', 'Day 5'],
-        ['app/services/tenant_service.py', 'Core', 'Tenant CRUD + AI toggle logic: validation, DB writes, audit calls', 'Day 2-3'],
-        ['app/services/launch_service.py', 'Core', 'Validate tenant + ai_enabled, create session, call token service, return chat URL', 'Day 3-4'],
-        ['app/services/token_service.py', 'Core', 'JWT generation - signing, claims (tenant_id, session_id, role), expiry', 'Day 3-4'],
-        ['app/templates/*.html', 'Core', 'layout.html, tenants.html, add_tenant.html, edit_tenant.html', 'Day 2-3'],
-        ['app/static/css, js', 'Core', 'Bootstrap styling + client-side interactivity', 'Day 2-5'],
-        ['migrations/', 'Foundation', 'Alembic scripts for 3 tables; rerun on any model change', 'Day 1, 3'],
-        ['tests/test_tenants.py', 'Integration', 'Automated tests for all Tenant CRUD + enable/disable', 'Day 3-4'],
-        ['tests/test_launch.py', 'Integration', 'Tests for launch + full create->enable->launch->token flow', 'Day 3-4'],
-        ['Dockerfile / docker-compose.yml', 'Foundation', 'Containerize app; Compose wires app + DB', 'Day 1-2, 5'],
-        ['requirements.txt / .env.example', 'Ongoing', 'Maintained centrally; every dev adds packages/env vars their part needs', 'Ongoing'],
-        ['README.md', 'Foundation/Hardening', 'Setup, architecture, endpoint list - updated as pieces land', 'Day 1, 5'],
-    ]
-)
+H('4. Cross-Functional Ownership Model (everyone learns the whole project)', 1)
+P('Principle: collective ownership + rotation across the three pillars. Every developer rotates through Frontend, Backend, AI-Services, and Infra/QA so that by the end each member has built, reviewed, and tested all three pillars.')
 
-# ===== Section 4: Ownership Model =====
-add_heading('4. Cross-Functional Ownership Model (everyone learns the whole project)', 1)
-add_para('Principle: We replace fixed silos with collective ownership + rotation. Every developer rotates through all four areas over the project so that, by the end, each team member has built, reviewed, and tested every layer (models -> schemas -> routes -> services -> templates -> infra/tests).')
+H('4.1 Roles per pillar (rotating)', 2)
+B('Primary (P): builds the pillar work this phase.')
+B('Reviewer (R): reviews PRs, pairs, and learns - becomes next phase Primary.')
+B('Lead: owns the API contracts between pillars (frontend<->backend<->ai), architecture, and standards.')
 
-add_heading('4.1 Roles per module (rotating)', 2)
-add_bullet('Primary (P): builds the module this phase.')
-add_bullet('Reviewer (R): reviews PRs, pairs, and learns the module - becomes next phase Primary.')
-add_bullet('Lead: owns main.py scaffold + architecture, unblocks, enforces standards.')
-
-add_heading('4.2 Rotation matrix (Primary focus per phase)', 2)
-add_para('Devs are grouped into 4 pods (2-3 devs each). Pods shift one module to the right every phase, so each pod touches every area.')
-add_table(
+H('4.2 Rotation matrix (Primary focus per phase)', 2)
+P('4 pods (2-3 devs each) shift one pillar to the right every phase, so each pod touches Frontend, Backend, AI-Services, and Infra/QA.')
+TABLE(
     ['Phase', 'Pod 1', 'Pod 2', 'Pod 3', 'Pod 4'],
     [
-        ['Phase 1 - Foundation', 'Tenant models/schemas', 'Session + token services', 'Admin UI scaffolding', 'Infra: config, DB, Docker, migrations'],
-        ['Phase 2 - Core build', 'Tenant routes + service', 'Launch route + service', 'Admin templates + static', 'Audit log + health + tests setup'],
-        ['Phase 3 - Integration', 'Launch route + service', 'Admin templates + static', 'Infra/tests', 'Tenant routes + service'],
-        ['Phase 4 - Hardening', 'Infra/tests + health', 'Tenant routes + service', 'Launch route + service', 'Admin UI polish + docs'],
+        ['Phase 1 - Foundation', 'Frontend shell + auth UI', 'Backend core + tenancy/security', 'AI-services scaffold + serving', 'Infra: Docker, K8s, Terraform, CI'],
+        ['Phase 2 - Core', 'Backend tenant/academic API', 'AI-services RAG ingestion + retrieval', 'Infra: vector DB, model registry, tests', 'Frontend tenant-admin + dashboards'],
+        ['Phase 3 - AI Integration', 'AI-services pipeline + guardrails + router', 'Infra/tests + isolation suite', 'Frontend student AI chat + professor analytics', 'Backend ai_client + finance API'],
+        ['Phase 4 - Hardening', 'Infra: scaling, DR, observability', 'Frontend polish + accessibility', 'Backend security/audit hardening', 'AI-services cost routing + eval'],
     ]
 )
-add_para('After 4 phases, every pod has worked on Tenant, Launch/Session, Admin UI, and Infra/QA. Pair-programming across pods is encouraged on integration days.', italic=True)
+P('After 4 phases every pod has worked across all three pillars plus infra. Cross-pod pairing is required on integration days.', italic=True)
 
-add_heading('4.3 Guardrails so rotation does not cause chaos', 2)
-add_bullet('One coding standard (linter/formatter + naming conventions) enforced in CI.')
-add_bullet('Mandatory PR review by the incoming Primary - that is how knowledge transfers.')
-add_bullet('Module README/doc-string kept up to date by whoever is Primary that phase.')
-add_bullet('main.py and requirements.txt changes always reviewed by the Lead to avoid merge conflicts.')
-add_bullet('Daily 15-min sync where each pod demos what they shipped, so the whole team stays current on all modules.')
+H('4.3 Guardrails so rotation does not cause chaos', 2)
+B('Stable API contracts (OpenAPI for backend, typed client for frontend, defined ai-services HTTP interface) so pillars stay decoupled while people rotate.')
+B('One coding standard per pillar (ESLint/Prettier for frontend; ruff/black for Python) enforced in CI.')
+B('Mandatory PR review by the incoming Primary - that is how knowledge transfers.')
+B('Lead reviews any change to cross-pillar contracts, requirements/package files, and IaC.')
+B('Daily 15-min sync where each pod demos shipped work; weekly cross-pillar knowledge share.')
 
-# ===== Section 5: Phases =====
-add_heading('5. Phase-Wise Work Breakdown', 1)
+H('5. Phase-Wise Work Breakdown', 1)
 
-add_heading('Phase 1 - Foundation (Day 1)', 2)
-add_para('Goal: Skeleton runs end-to-end empty.', bold=True)
-for b in ['config.py, database.py (engine + session).',
-          'All three ORM models defined (tenant, session, audit_log).',
-          'First Alembic migration creates the 3 tables.',
-          'Dockerfile + docker-compose.yml boot app + DB locally.',
-          'main.py boots an empty FastAPI app.']:
-    add_bullet(b)
-add_para('Exit criteria: docker-compose up starts the app; DB tables exist; health stub responds.', italic=True)
+H('Phase 1 - Foundation', 2)
+P('Goal: all three pillars boot and talk to each other (empty).', bold=True)
+for b in ['Frontend: app shell, routing, auth screens (SSO + JWT), API client stub.',
+          'Backend: config, database, core tenancy + security, main.py with health route.',
+          'AI-services: service scaffold, serving config (vLLM/Ollama), embeddings stub, models.yaml.',
+          'Infra: Dockerfiles, docker-compose (frontend+backend+ai+db+vector-db), CI pipeline, base Terraform.']:
+    B(b)
+P('Exit criteria: docker-compose up runs all three pillars; frontend reaches backend; backend reaches ai-services health.', italic=True)
 
-add_heading('Phase 2 - Core Modules (Day 2-3)', 2)
-add_para('Goal: Each functional area works in isolation.', bold=True)
-for b in ['Tenant: schemas -> service -> routes (CRUD + enable/disable-ai), writing audit events.',
-          'Launch/Session: schemas -> token_service (JWT) -> launch_service -> /api/v1/ai/launch.',
-          'Admin UI: Jinja templates + Bootstrap + app.js; pages call the Tenant API.']:
-    add_bullet(b)
-add_para('Exit criteria: Tenant CRUD works via API; admin pages render; launch returns a token.', italic=True)
+H('Phase 2 - Core Modules', 2)
+P('Goal: tenant + academic + ingestion work in isolation.', bold=True)
+for b in ['Backend: tenant CRUD + enable/disable-AI, auth/RBAC, academic (attendance/marks) APIs, audit log.',
+          'AI-services: note ingestion (parse->chunk->embed) and tenant/course-scoped vector retrieval.',
+          'Frontend: tenant-admin module + role dashboards reading real APIs.',
+          'Infra: provision vector DB, model registry/weights download, set up automated tests.']:
+    B(b)
+P('Exit criteria: a tenant can be created and configured; professor notes ingest into the vector store; dashboards render real data.', italic=True)
 
-add_heading('Phase 3 - Integration (Day 3-4)', 2)
-add_para('Goal: Modules talk to each other; full flow proven.', bold=True)
-for b in ['Wire all routers into main.py.',
-          'End-to-end flow: create tenant -> enable AI -> launch -> receive chat URL + token.',
-          'Admin UI buttons trigger enable/disable and reflect status.',
-          'tests/test_tenants.py + tests/test_launch.py cover CRUD and the full flow.']:
-    add_bullet(b)
-add_para('Exit criteria: Full create->enable->launch->token flow passes automated tests.', italic=True)
+H('Phase 3 - AI Integration', 2)
+P('Goal: end-to-end grounded AI experience.', bold=True)
+for b in ['AI-services: RAG pipeline (grounded prompt -> answer + citations), guardrails, self-hosted<->OpenAI router.',
+          'Backend: ai_client wiring, AI launch/session + JWT, finance APIs.',
+          'Frontend: student AI chat with citations; professor analytics + weak-area views.',
+          'Infra/QA: cross-tenant isolation test suite, full-flow integration tests.']:
+    B(b)
+P('Exit criteria: student asks a question -> grounded answer with citations; full create->enable->launch->chat flow passes tests; no cross-tenant leakage.', italic=True)
 
-add_heading('Phase 4 - Hardening & Handover (Day 5)', 2)
-add_para('Goal: Production-ready skeleton.', bold=True)
-for b in ['health.py readiness/liveness endpoints.',
-          'Error handling, input validation, and audit-log coverage reviewed.',
-          'docker-compose.yml finalized for staging; .env.example complete.',
-          'README.md finalized (setup, architecture, endpoint list).',
-          'Knowledge-share session: each pod walks the others through its module.']:
-    add_bullet(b)
-add_para('Exit criteria: All tests green; docs complete; every team member can explain every module.', italic=True)
+H('Phase 4 - Hardening & Scale', 2)
+P('Goal: production-ready, multi-university scale.', bold=True)
+for b in ['Infra: autoscaling, GPU node pool, DR/backups, observability (metrics/logs/traces).',
+          'Backend: security/audit hardening, rate limits, per-tenant quotas.',
+          'AI-services: cost-aware routing (self-hosted-first), answer quality eval harness.',
+          'Frontend: accessibility, responsive polish, error/empty states.',
+          'Docs + knowledge share: every member can explain all three pillars.']:
+    B(b)
+P('Exit criteria: all tests green; observability live; cost controls in place; team fully cross-trained.', italic=True)
 
-# ===== Section 6: Quick reference =====
-add_heading('6. Quick Reference - Module Areas (no permanent owners)', 1)
-add_table(
-    ['Area', 'Files', 'Notes'],
+H('6. Quick Reference - Pillars (no permanent owners)', 1)
+TABLE(
+    ['Pillar', 'Folders', 'Notes'],
     [
-        ['Tenant Management', 'models/tenant.py, schemas/tenant.py, routes/tenants.py, services/tenant_service.py', 'Rotates each phase'],
-        ['Launch & Session', 'models/session.py, schemas/launch.py, schemas/session.py, routes/launch.py, services/launch_service.py, services/token_service.py', 'Rotates each phase'],
-        ['Admin UI', 'routes/admin.py, templates/*, static/*', 'Rotates each phase'],
-        ['Infrastructure & QA', 'config.py, database.py, models/audit_log.py, routes/health.py, migrations/, tests/, Dockerfile, docker-compose.yml, requirements.txt, .env.example', 'Rotates each phase'],
-        ['Architecture (Lead)', 'main.py, README.md', 'Stable lead role; standards & integration'],
+        ['Frontend', 'frontend/src/{app,auth,modules,components,lib,store}', 'Rotates each phase'],
+        ['Backend', 'backend/app/{core,models,schemas,routes,services,clients} + migrations', 'Rotates each phase'],
+        ['AI-Services', 'ai-services/{rag,serving,prompts,model_registry,workers}', 'Rotates each phase'],
+        ['Infra & QA', 'deploy/{docker,k8s,terraform}, tests/, scripts/', 'Rotates each phase'],
+        ['Architecture (Lead)', 'cross-pillar API contracts, docker-compose.yml, README.md, docs/', 'Stable lead role'],
     ]
 )
 
-add_para('Corrected version: fixed tree nesting/connectors, added missing __init__.py and proper static/ subfolders, resolved path inconsistencies between sections, normalized sprint days, replaced hard silos with a rotation model giving every team member whole-project experience, and added a phase-wise work breakdown.', italic=True)
+P('This version restructures the project into Frontend / Backend / AI-Services pillars, keeps weights out of the repo via a model registry, decouples backend from AI via an HTTP client, and remaps the team rotation and phase plan across the three pillars so every member gains whole-project experience.', italic=True)
 
-out = '/app/scripts/Project_Skeleton_Ownership_Map_CORRECTED.docx'
-doc.save(out)
-print('Saved:', out)
+out='/app/scripts/Project_Skeleton_Ownership_Map_CORRECTED.docx'
+doc.save(out); print('Saved:', out)
