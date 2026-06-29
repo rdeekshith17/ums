@@ -1,0 +1,9 @@
+tenant_id,name,type,city,established,ai_enabled
+OU,Osmania University,State,Hyderabad,1918,False
+JNTUH,Jawaharlal Nehru Technological University Hyderabad,State,Hyderabad,1972,True
+UOH,University of Hyderabad,Central,Hyderabad,1974,False
+KU,Kakatiya University,State,Warangal,1976,True
+TU,Telangana University,State,Nizamabad,2006,False
+SU,Satavahana University,State,Karimnagar,2008,True
+PU,Palamuru University,State,Mahbubnagar,2008,True
+IIITH,International Institute of Information Technology Hyderabad,Deemed,Hyderabad,1998,True

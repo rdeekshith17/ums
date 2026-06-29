@@ -1,0 +1,37 @@
+employee_id,name,email,tenant,designation,office
+OU-ADM-001,Charan Pasula,charan.pasulaadm1@ou.ac.in,OU,Admissions Officer,Administration
+OU-ADM-002,Rakesh Kandula,rakesh.kandulaadm2@ou.ac.in,OU,Registrar,Administration
+OU-ADM-003,Lasya Bollam,lasya.bollamadm3@ou.ac.in,OU,Finance Manager,Accounts
+OU-ADM-004,Sravya Goud,sravya.goudadm4@ou.ac.in,OU,Admissions Officer,Administration
+JNTUH-ADM-001,Lasya Thota,lasya.thotaadm1@jntuh.ac.in,JNTUH,Admissions Officer,Administration
+JNTUH-ADM-002,Vinay Jakkula,vinay.jakkulaadm2@jntuh.ac.in,JNTUH,Accounts Officer,Accounts
+JNTUH-ADM-003,Pavan Thota,pavan.thotaadm3@jntuh.ac.in,JNTUH,Examination Controller,Examinations
+JNTUH-ADM-004,Srinivas Pasula,srinivas.pasulaadm4@jntuh.ac.in,JNTUH,Examination Controller,Examinations
+UOH-ADM-001,Karthik Pittala,karthik.pittalaadm1@uoh.ac.in,UOH,Examination Controller,Examinations
+UOH-ADM-002,Manoj Mamidi,manoj.mamidiadm2@uoh.ac.in,UOH,Admissions Officer,Administration
+UOH-ADM-003,Manasa Varma,manasa.varmaadm3@uoh.ac.in,UOH,Admissions Officer,Administration
+UOH-ADM-004,Nikitha Bandi,nikitha.bandiadm4@uoh.ac.in,UOH,Examination Controller,Examinations
+UOH-ADM-005,Sandeep Bollam,sandeep.bollamadm5@uoh.ac.in,UOH,Examination Controller,Examinations
+KU-ADM-001,Aishwarya Sirikonda,aishwarya.sirikondaadm1@ku.ac.in,KU,Registrar,Administration
+KU-ADM-002,Manasa Thota,manasa.thotaadm2@ku.ac.in,KU,Examination Controller,Examinations
+KU-ADM-003,Yashwanth Thota,yashwanth.thotaadm3@ku.ac.in,KU,Finance Manager,Accounts
+KU-ADM-004,Aishwarya Mudiraj,aishwarya.mudirajadm4@ku.ac.in,KU,Registrar,Administration
+KU-ADM-005,Deepika Bollam,deepika.bollamadm5@ku.ac.in,KU,Finance Manager,Accounts
+TU-ADM-001,Sravya Mamidi,sravya.mamidiadm1@tu.ac.in,TU,Admissions Officer,Administration
+TU-ADM-002,Mahesh Mallepally,mahesh.mallepallyadm2@tu.ac.in,TU,Admissions Officer,Administration
+TU-ADM-003,Vaishnavi Nallamothu,vaishnavi.nallamothuadm3@tu.ac.in,TU,Registrar,Administration
+TU-ADM-004,Manasa Pasula,manasa.pasulaadm4@tu.ac.in,TU,Accounts Officer,Accounts
+SU-ADM-001,Manasa Jakkula,manasa.jakkulaadm1@su.ac.in,SU,Registrar,Administration
+SU-ADM-002,Haritha Nallamothu,haritha.nallamothuadm2@su.ac.in,SU,Examination Controller,Examinations
+SU-ADM-003,Manasa Anumula,manasa.anumulaadm3@su.ac.in,SU,Accounts Officer,Accounts
+SU-ADM-004,Vaishnavi Mamidi,vaishnavi.mamidiadm4@su.ac.in,SU,Admissions Officer,Administration
+PU-ADM-001,Bhargav Madiraju,bhargav.madirajuadm1@pu.ac.in,PU,Admissions Officer,Administration
+PU-ADM-002,Navya Mudiraj,navya.mudirajadm2@pu.ac.in,PU,Examination Controller,Examinations
+PU-ADM-003,Madhavi Peddinti,madhavi.peddintiadm3@pu.ac.in,PU,Accounts Officer,Accounts
+PU-ADM-004,Mahesh Naidu,mahesh.naiduadm4@pu.ac.in,PU,Examination Controller,Examinations
+PU-ADM-005,Goutham Goud,goutham.goudadm5@pu.ac.in,PU,Admissions Officer,Administration
+IIITH-ADM-001,Sravani Bandi,sravani.bandiadm1@iiith.ac.in,IIITH,Registrar,Administration
+IIITH-ADM-002,Bhargav Cheruku,bhargav.cherukuadm2@iiith.ac.in,IIITH,Examination Controller,Examinations
+IIITH-ADM-003,Lasya Nallamothu,lasya.nallamothuadm3@iiith.ac.in,IIITH,Admissions Officer,Administration
+IIITH-ADM-004,Aishwarya Vemula,aishwarya.vemulaadm4@iiith.ac.in,IIITH,Examination Controller,Examinations
+IIITH-ADM-005,Rakesh Rao,rakesh.raoadm5@iiith.ac.in,IIITH,Admissions Officer,Administration

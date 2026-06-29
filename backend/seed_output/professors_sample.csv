@@ -1,0 +1,61 @@
+employee_id,name,email,tenant,designation,specialization,salary
+OU-FAC-1001,Mahesh Sharma,mahesh.sharma1001@ou.ac.in,OU,Associate Professor,Marketing,125400.0
+OU-FAC-1002,Abhishek Vemula,abhishek.vemula1002@ou.ac.in,OU,HOD,Data Science,161700.0
+OU-FAC-1003,Tejaswini Pasula,tejaswini.pasula1003@ou.ac.in,OU,HOD,Power Electronics,132800.0
+OU-FAC-1004,Manasa Gandla,manasa.gandla1004@ou.ac.in,OU,Professor,Pharmacology,76900.0
+OU-FAC-1005,Charan Mallepally,charan.mallepally1005@ou.ac.in,OU,HOD,Pharmacology,119700.0
+OU-FAC-1006,Aravind Ganta,aravind.ganta1006@ou.ac.in,OU,Professor,Computer Networks,161700.0
+OU-FAC-1007,Anil Cheruku,anil.cheruku1007@ou.ac.in,OU,Assistant Professor,Finance,150000.0
+OU-FAC-1008,Sahasra Eluri,sahasra.eluri1008@ou.ac.in,OU,HOD,Power Electronics,92200.0
+OU-FAC-1009,Spandana Bandi,spandana.bandi1009@ou.ac.in,OU,Assistant Professor,Structural Engineering,138100.0
+OU-FAC-1010,Vinay Thota,vinay.thota1010@ou.ac.in,OU,HOD,Finance,125700.0
+OU-FAC-1011,Pooja Gattu,pooja.gattu1011@ou.ac.in,OU,Assistant Professor,Computer Networks,74100.0
+JNTUH-FAC-1001,Kiran Bandi,kiran.bandi1001@jntuh.ac.in,JNTUH,Professor,VLSI Design,164400.0
+JNTUH-FAC-1002,Charan Madiraju,charan.madiraju1002@jntuh.ac.in,JNTUH,Professor,Thermal Engineering,156300.0
+JNTUH-FAC-1003,Meghana Kasturi,meghana.kasturi1003@jntuh.ac.in,JNTUH,Assistant Professor,Artificial Intelligence,71700.0
+JNTUH-FAC-1004,Bhavana Pittala,bhavana.pittala1004@jntuh.ac.in,JNTUH,Associate Professor,Embedded Systems,152800.0
+JNTUH-FAC-1005,Pranavi Mallepally,pranavi.mallepally1005@jntuh.ac.in,JNTUH,Professor,Embedded Systems,118800.0
+JNTUH-FAC-1006,Sahasra Dasari,sahasra.dasari1006@jntuh.ac.in,JNTUH,Professor,VLSI Design,164900.0
+JNTUH-FAC-1007,Lakshmi Eluri,lakshmi.eluri1007@jntuh.ac.in,JNTUH,Assistant Professor,VLSI Design,177300.0
+JNTUH-FAC-1008,Meghana Mallepally,meghana.mallepally1008@jntuh.ac.in,JNTUH,Professor,Data Science,72500.0
+JNTUH-FAC-1009,Ravi Eluri,ravi.eluri1009@jntuh.ac.in,JNTUH,HOD,Artificial Intelligence,122200.0
+JNTUH-FAC-1010,Nikhil Kumar,nikhil.kumar1010@jntuh.ac.in,JNTUH,Assistant Professor,Artificial Intelligence,149400.0
+JNTUH-FAC-1011,Charan Pasula,charan.pasula1011@jntuh.ac.in,JNTUH,Assistant Professor,Data Science,61600.0
+JNTUH-FAC-1012,Harish Jakkula,harish.jakkula1012@jntuh.ac.in,JNTUH,Assistant Professor,Data Science,135500.0
+JNTUH-FAC-1013,Vamshi Cheruku,vamshi.cheruku1013@jntuh.ac.in,JNTUH,HOD,Marketing,87100.0
+JNTUH-FAC-1014,Vishnu Anumula,vishnu.anumula1014@jntuh.ac.in,JNTUH,HOD,Embedded Systems,163700.0
+JNTUH-FAC-1015,Harika Anumula,harika.anumula1015@jntuh.ac.in,JNTUH,Assistant Professor,Pharmacology,135100.0
+JNTUH-FAC-1016,Rajesh Varma,rajesh.varma1016@jntuh.ac.in,JNTUH,Assistant Professor,Power Electronics,170700.0
+UOH-FAC-1001,Pranavi Mudiraj,pranavi.mudiraj1001@uoh.ac.in,UOH,Professor,Structural Engineering,142700.0
+UOH-FAC-1002,Haritha Thota,haritha.thota1002@uoh.ac.in,UOH,Professor,Embedded Systems,145700.0
+UOH-FAC-1003,Sneha Bandari,sneha.bandari1003@uoh.ac.in,UOH,Associate Professor,Artificial Intelligence,130000.0
+UOH-FAC-1004,Teja Pittala,teja.pittala1004@uoh.ac.in,UOH,Assistant Professor,Computer Networks,115500.0
+UOH-FAC-1005,Anusha Madiraju,anusha.madiraju1005@uoh.ac.in,UOH,Professor,Structural Engineering,117900.0
+UOH-FAC-1006,Akhil Cheruku,akhil.cheruku1006@uoh.ac.in,UOH,Assistant Professor,Power Electronics,155900.0
+UOH-FAC-1007,Harish Bandi,harish.bandi1007@uoh.ac.in,UOH,HOD,Pharmacology,172100.0
+UOH-FAC-1008,Kiran Reddy,kiran.reddy1008@uoh.ac.in,UOH,Associate Professor,Thermal Engineering,72000.0
+UOH-FAC-1009,Ravi Reddy,ravi.reddy1009@uoh.ac.in,UOH,Professor,VLSI Design,115500.0
+UOH-FAC-1010,Sneha Ganta,sneha.ganta1010@uoh.ac.in,UOH,HOD,Structural Engineering,96800.0
+UOH-FAC-1011,Meghana Mallepally,meghana.mallepally1011@uoh.ac.in,UOH,Assistant Professor,Artificial Intelligence,105000.0
+UOH-FAC-1012,Akhil Sharma,akhil.sharma1012@uoh.ac.in,UOH,HOD,Marketing,135200.0
+UOH-FAC-1013,Pavan Mamidi,pavan.mamidi1013@uoh.ac.in,UOH,Assistant Professor,Pharmacology,147100.0
+UOH-FAC-1014,Bhavana Varma,bhavana.varma1014@uoh.ac.in,UOH,Professor,Artificial Intelligence,172400.0
+UOH-FAC-1015,Nandini Chary,nandini.chary1015@uoh.ac.in,UOH,Assistant Professor,Embedded Systems,111500.0
+UOH-FAC-1016,Karthik Kandula,karthik.kandula1016@uoh.ac.in,UOH,Professor,Embedded Systems,128800.0
+UOH-FAC-1017,Chaitanya Reddy,chaitanya.reddy1017@uoh.ac.in,UOH,Assistant Professor,Power Electronics,134700.0
+UOH-FAC-1018,Manoj Mamidi,manoj.mamidi1018@uoh.ac.in,UOH,Assistant Professor,Artificial Intelligence,177100.0
+UOH-FAC-1019,Saketh Bollam,saketh.bollam1019@uoh.ac.in,UOH,Assistant Professor,Pharmacology,78700.0
+UOH-FAC-1020,Manoj Mamidi,manoj.mamidi1020@uoh.ac.in,UOH,HOD,Power Electronics,113100.0
+UOH-FAC-1021,Bhavana Mudiraj,bhavana.mudiraj1021@uoh.ac.in,UOH,Professor,VLSI Design,127200.0
+UOH-FAC-1022,Manoj Cheruku,manoj.cheruku1022@uoh.ac.in,UOH,Professor,Data Science,73900.0
+UOH-FAC-1023,Lasya Jakkula,lasya.jakkula1023@uoh.ac.in,UOH,Professor,Embedded Systems,91000.0
+UOH-FAC-1024,Tejaswini Vemula,tejaswini.vemula1024@uoh.ac.in,UOH,Assistant Professor,Pharmacology,102800.0
+UOH-FAC-1025,Sahasra Kommu,sahasra.kommu1025@uoh.ac.in,UOH,Associate Professor,Power Electronics,123600.0
+KU-FAC-1001,Navya Bandi,navya.bandi1001@ku.ac.in,KU,Assistant Professor,Pharmacology,119500.0
+KU-FAC-1002,Praveen Eluri,praveen.eluri1002@ku.ac.in,KU,Assistant Professor,Embedded Systems,121900.0
+KU-FAC-1003,Bhargav Kasturi,bhargav.kasturi1003@ku.ac.in,KU,Professor,Pharmacology,63100.0
+KU-FAC-1004,Goutham Bandari,goutham.bandari1004@ku.ac.in,KU,Professor,Finance,132500.0
+KU-FAC-1005,Kiran Rao,kiran.rao1005@ku.ac.in,KU,Professor,Computer Networks,166400.0
+KU-FAC-1006,Abhishek Sharma,abhishek.sharma1006@ku.ac.in,KU,HOD,Artificial Intelligence,62700.0
+KU-FAC-1007,Navya Pasula,navya.pasula1007@ku.ac.in,KU,Professor,Artificial Intelligence,133100.0
+KU-FAC-1008,Sirisha Pittala,sirisha.pittala1008@ku.ac.in,KU,Associate Professor,Marketing,141900.0

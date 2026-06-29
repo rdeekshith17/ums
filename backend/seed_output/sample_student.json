@@ -1,0 +1,11 @@
+{
+  "student": {
+    "roll_no": "OU22CSE001",
+    "name": "Mahesh Mallepally",
+    "email": "mahesh.mallepallyou22cse001@ou.ac.in",
+    "tenant_id": "OU",
+    "department": "Computer Science & Engineering",
+    "batch_year": 2022,
+    "cgpa": 6.2
+  }
+}
