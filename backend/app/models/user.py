@@ -45,6 +45,8 @@ class User(Base):
     auth_type = Column(String, nullable=False, default="local")  # local / sso
     status = Column(String, nullable=False, default="active")
     created_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
+    password_hash = Column(String, nullable=True)
+    last_login = Column(DateTime(timezone=True), nullable=True)
 
 
 class StudentProfile(Base):
