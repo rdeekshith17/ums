@@ -64,7 +64,18 @@ def login(body: LoginIn, response: Response, db: Session = Depends(get_db)):
 
 @router.post("/logout")
 def logout(response: Response):
-    response.delete_cookie(COOKIE_NAME, path="/")
+    # Overwrite with identical attributes + immediate expiry so the browser
+    # actually clears the Secure/SameSite=None session cookie.
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value="",
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=0,
+        expires=0,
+        path="/",
+    )
     return {"ok": True}
 
 
