@@ -238,7 +238,22 @@ Both servers hot-reload on file changes — no restart needed except for `.env` 
 
 ---
 
-## 12. Production Notes
+## 12. Branding / White-label (Emergent watermark removed)
+
+The project is already de-branded:
+- **`frontend/public/index.html`** — removed the "Made with Emergent" floating badge, the Emergent loader script, the PostHog analytics snippet, and the "product of emergent.sh" description. Title is now **"UniAI — University AI Dashboard"**.
+- App UI shows only your **UniAI** branding (sidebar, login page, footer).
+
+To customize further:
+- **Tab title / meta:** edit `frontend/public/index.html` (`<title>`, `<meta name="description">`).
+- **Favicon:** replace `frontend/public/favicon.ico`.
+- **App name / logo:** edit the brand block in `frontend/src/components/Layout.jsx` and `frontend/src/pages/Login.jsx` (the `GraduationCap` icon + "UniAI" text).
+
+> Note: `REACT_APP_BACKEND_URL` only contains an `emergentagent.com` value on the **hosted preview**. For local dev it's `http://localhost:8001`, and in production you set it to your own domain — so no Emergent reference remains in your deployed code.
+
+---
+
+## 13. Production Notes
 - Use **PostgreSQL** (Option B), not SQLite.
 - Serve over **HTTPS** and set `COOKIE_SECURE=true`, `COOKIE_SAMESITE=none`.
 - Set a strong random `JWT_SECRET`.
