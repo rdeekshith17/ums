@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Plus, Power, Ban, CheckCircle2, X } from "lucide-react";
 import Layout from "../components/Layout";
 import { StatCard, DataTable, Badge, Button, Spinner } from "../components/ui";
@@ -95,7 +95,7 @@ export default function SuperAdmin() {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     const [o, u] = await Promise.all([
       api.get("/superadmin/overview"),
       api.get("/superadmin/universities"),
@@ -103,9 +103,11 @@ export default function SuperAdmin() {
     setOverview(o.data);
     setUnis(u.data);
     setLoading(false);
-  };
+  }, []);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const toggleAi = async (u) => {
     await api.patch(`/superadmin/universities/${u.tenant_id}/ai`, { ai_enabled: !u.ai_enabled });

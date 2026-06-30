@@ -102,7 +102,7 @@ export function DataTable({ columns, rows, searchable = true, testId }) {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {filtered.map((r, i) => (
-              <tr key={i} className="hover:bg-slate-50/60">
+              <tr key={r.roll_no || r.employee_id || r.tenant_id || r.id || i} className="hover:bg-slate-50/60">
                 {columns.map((c) => (
                   <td key={c.key} className="whitespace-nowrap px-4 py-3 text-slate-700">
                     {c.render ? c.render(r) : r[c.key]}

@@ -1,0 +1,31 @@
+{
+  "summary": "Regression test of localStorage->httpOnly-cookie auth migration and React hook fixes. All 27 checks passed across Super Admin and Tenant Admin flows. Cookie-based auth verified: login sets httpOnly Secure SameSite=None access_token cookie, NO 'uniai_token' in localStorage, /api/auth/me restores session on reload, POST /api/auth/logout clears the cookie. AI/status toggles persist across reload. Tenant 6 tabs (students, professors, payments, payroll, hall-tickets, expenses) load data tables correctly (useEffect [tab, data] deps fix works). Role isolation enforced: tenant visiting /super is redirected back to /tenant; logged-out user visiting /super is redirected to /login.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Login demo accounts panel", "issues": ["Tenant Admin entry shows 'Kakatiya University / Admin@123' instead of the email (cosmetic only — demo-tenant button correctly pre-fills the real email aishwarya.mudirajadm4@ku.ac.in). Carried over from iteration_1; no action needed."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AuthContext: setUser(false) is used to represent anonymous state while null = loading. Works, but a string or constant like 'ANON' would be clearer. Minor.",
+    "TenantAdmin useEffect deps are [tab, data] which is correct for the early-return cache pattern, but re-runs whenever the data object reference changes. Currently safe because it guards with `if (data[tab]) return;`. Acceptable.",
+    "Backend api_auth.py sets cookie with samesite='none' Secure=True — required because frontend and backend share the same emergentagent.com origin via ingress. Validated cookie attributes via browser context: httpOnly=True, sameSite=None.",
+    "Logout endpoint correctly calls response.delete_cookie('access_token', path='/') — verified cookie value cleared after POST /api/auth/logout.",
+    "No localStorage usage anywhere for auth (grep confirmed). Migration is clean."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "Not re-tested (frontend-only request; iteration_1 = 23/23 passing)", "frontend": "100% (27/27 regression checks)"},
+  "test_credentials": "Super: superadmin@uniai.app / SuperAdmin@123. Tenant: aishwarya.mudirajadm4@ku.ac.in / Admin@123 (sourced from /app/memory/test_credentials.md).",
+  "seed_data_creation": "Created one additional test university 'RT792251' (Regress Test Univ) via Super Admin Add University modal during this run. Persists in SQLite — same pattern as iteration_1. AI/status toggles were also flipped and flipped back to original state.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Cookie-based auth migration is fully working. Important selectors for login page: data-testid='login-email' and 'login-password' (NOT email-input/password-input). Demo buttons: 'demo-super' and 'demo-tenant'. Submit: 'login-submit'. Logout: 'logout-button'. Cookie name: 'access_token' (httpOnly, Secure, SameSite=None). Session-restore endpoint: GET /api/auth/me. Logout endpoint: POST /api/auth/logout. localStorage must NOT contain 'uniai_token'. Tenant ProtectedRoute redirects to /tenant when role mismatched (not to /login). Logged-out visit to /super redirects to /login.",
+  "rca_of_the_issue": "N/A — no defects found. Regression confirms the localStorage->httpOnly-cookie migration and useEffect dep / key-prop fixes did not break any existing functionality."
+}

@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import api from "../lib/api";
 
 const AuthContext = createContext(null);
@@ -7,40 +14,40 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // null = loading; false = anon
   const [ready, setReady] = useState(false);
 
+  // On mount, ask the server who we are (auth cookie is sent automatically).
   useEffect(() => {
-    const token = localStorage.getItem("uniai_token");
-    if (!token) {
-      setUser(false);
-      setReady(true);
-      return;
-    }
+    let active = true;
     api
       .get("/auth/me")
-      .then((res) => setUser(res.data))
-      .catch(() => {
-        localStorage.removeItem("uniai_token");
-        setUser(false);
-      })
-      .finally(() => setReady(true));
+      .then((res) => active && setUser(res.data))
+      .catch(() => active && setUser(false))
+      .finally(() => active && setReady(true));
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
-    localStorage.setItem("uniai_token", data.access_token);
     setUser(data.user);
     return data.user;
-  };
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem("uniai_token");
+  const logout = useCallback(async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch {
+      /* ignore network errors on logout */
+    }
     setUser(false);
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, ready, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({ user, ready, login, logout }),
+    [user, ready, login, logout]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);

@@ -83,7 +83,7 @@ export default function TenantAdmin() {
       setData((d) => ({ ...d, [tab]: r.data }));
       setLoadingTab(false);
     });
-  }, [tab]); // eslint-disable-line
+  }, [tab, data]);
 
   return (
     <Layout

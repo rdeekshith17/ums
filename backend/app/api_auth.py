@@ -2,16 +2,35 @@
 
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.auth import create_access_token, get_current_user, verify_password
+from app.auth import (
+    ACCESS_TOKEN_MINUTES,
+    create_access_token,
+    get_current_user,
+    verify_password,
+)
 from app.database import get_db
 from app.models.user import User
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+COOKIE_NAME = "access_token"
+
+
+def _set_auth_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=ACCESS_TOKEN_MINUTES * 60,
+        path="/",
+    )
 
 
 class LoginIn(BaseModel):
@@ -30,7 +49,7 @@ def user_out(u: User) -> dict:
 
 
 @router.post("/login")
-def login(body: LoginIn, db: Session = Depends(get_db)):
+def login(body: LoginIn, response: Response, db: Session = Depends(get_db)):
     email = body.email.strip().lower()
     user = db.query(User).filter(func.lower(User.email) == email).first()
     if not user or not user.password_hash or not verify_password(body.password, user.password_hash):
@@ -38,7 +57,15 @@ def login(body: LoginIn, db: Session = Depends(get_db)):
     user.last_login = datetime.now(timezone.utc)
     db.commit()
     token = create_access_token(user)
+    _set_auth_cookie(response, token)
+    # token also returned for non-browser/API clients; browsers use the httpOnly cookie.
     return {"access_token": token, "token_type": "bearer", "user": user_out(user)}
+
+
+@router.post("/logout")
+def logout(response: Response):
+    response.delete_cookie(COOKIE_NAME, path="/")
+    return {"ok": True}
 
 
 @router.get("/me")

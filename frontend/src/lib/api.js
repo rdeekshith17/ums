@@ -2,13 +2,8 @@ import axios from "axios";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const api = axios.create({ baseURL: API });
-
-api.interceptors.request.use((cfg) => {
-  const token = localStorage.getItem("uniai_token");
-  if (token) cfg.headers.Authorization = `Bearer ${token}`;
-  return cfg;
-});
+// withCredentials lets the browser send/receive the httpOnly auth cookie.
+const api = axios.create({ baseURL: API, withCredentials: true });
 
 export function formatApiError(detail) {
   if (detail == null) return "Something went wrong. Please try again.";
